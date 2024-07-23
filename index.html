@@ -1,0 +1,760 @@
+<html><head><base href="https://yn.tuva/home"><!DOCTYPE html>
+<html lang="tyv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Үн - Тыва хөгжүм платформазы</title>
+    <style>
+        :root {
+            --primary-color: #1DB954;
+            --secondary-color: #191414;
+            --text-color: #FFFFFF;
+            --background-color: #121212;
+            --hover-color: #282828;
+        }
+        
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', 'Arial', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        
+        .container {
+            display: flex;
+            height: calc(100vh - 90px);
+        }
+        
+        .sidebar {
+            width: 240px;
+            background-color: var(--secondary-color);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+        
+        .nav-item {
+            margin-bottom: 15px;
+        }
+        
+        .nav-item a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            transition: color 0.3s;
+        }
+        
+        .nav-item a:hover, .nav-item a.active {
+            color: var(--primary-color);
+        }
+        
+        .nav-item a i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .greeting {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .playlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .playlist-item {
+            background-color: var(--hover-color);
+            border-radius: 8px;
+            padding: 15px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        
+        .playlist-item:hover {
+            background-color: #3E3E3E;
+        }
+        
+        .playlist-item img {
+            width: 100%;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        
+        .playlist-item h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+        
+        .playlist-item p {
+            margin: 0;
+            font-size: 14px;
+            color: #B3B3B3;
+        }
+        
+        .now-playing {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--secondary-color);
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+        
+        .now-playing-info {
+            display: flex;
+            align-items: center;
+            width: 30%;
+        }
+        
+        .now-playing-info img {
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
+            margin-right: 15px;
+        }
+        
+        .now-playing-details h4, .now-playing-details p {
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .now-playing-details p {
+            font-size: 14px;
+            color: #B3B3B3;
+        }
+        
+        .player-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 40%;
+        }
+        
+        .player-buttons {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .player-buttons button {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 24px;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background-color: #535353;
+            border-radius: 2px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .progress {
+            width: 30%;
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+        
+        .player-actions {
+            display: flex;
+            align-items: center;
+            width: 30%;
+            justify-content: flex-end;
+        }
+        
+        .volume-control {
+            display: flex;
+            align-items: center;
+        }
+        
+        .volume-icon {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 100px;
+            height: 4px;
+            background: #535353;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity .2s;
+        }
+        
+        .volume-slider:hover {
+            opacity: 1;
+        }
+        
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        
+        .volume-slider::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        
+        .like-button {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 24px;
+            margin-left: 20px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .like-button:hover, .like-button.active {
+            color: var(--primary-color);
+        }
+        
+        .auth-buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        
+        .auth-buttons button {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            margin-left: 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .auth-buttons button:hover {
+            background-color: #1ed760;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: var(--secondary-color);
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+        }
+        
+        .modal-content h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 4px;
+        }
+        
+        .modal-content button {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: var(--primary-color);
+        }
+        
+        .search-container {
+            margin-bottom: 20px;
+        }
+        
+        .search-container input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 20px;
+            background-color: var(--hover-color);
+            color: var(--text-color);
+        }
+        
+        .search-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .search-item {
+            background-color: var(--hover-color);
+            border-radius: 8px;
+            padding: 15px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        
+        .search-item:hover {
+            background-color: #3E3E3E;
+        }
+        
+        .search-item img {
+            width: 100%;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        
+        .search-item h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+        
+        .search-item p {
+            margin: 0;
+            font-size: 14px;
+            color: #B3B3B3;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                order: 2;
+            }
+            
+            .main-content {
+                order: 1;
+            }
+            
+            .now-playing {
+                flex-wrap: wrap;
+                height: auto;
+                padding: 10px;
+            }
+            
+            .now-playing-info {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .player-controls {
+                width: 100%;
+                order: 3;
+            }
+            
+            .player-actions {
+                width: 100%;
+                justify-content: space-between;
+                margin-top: 10px;
+            }
+            
+            .auth-buttons {
+                position: static;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-buttons">
+        <button onclick="openModal('loginModal')">Кирер</button>
+        <button onclick="openModal('registerModal')">Бүрүткээр</button>
+    </div>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">Үн</div>
+            <nav>
+                <div class="nav-item"><a href="https://yn.tuva/home" class="active"><i class="fas fa-home"></i> Бажың</a></div>
+                <div class="nav-item"><a href="https://yn.tuva/search"><i class="fas fa-search"></i> Дилээр</a></div>
+                <div class="nav-item"><a href="https://yn.tuva/library"><i class="fas fa-book"></i> Мээң хөгжүмүм</a></div>
+                <div class="nav-item"><a href="https://yn.tuva/playlists"><i class="fas fa-list"></i> Плейлисттер</a></div>
+                <div class="nav-item"><a href="https://yn.tuva/new"><i class="fas fa-music"></i> Чаа үнген</a></div>
+                <div class="nav-item"><a href="https://yn.tuva/favorites"><i class="fas fa-heart"></i> Ынак ырыларым</a></div>
+            </nav>
+        </aside>
+        
+        <main class="main-content" id="main-content">
+            <!-- Content will be dynamically loaded here -->
+        </main>
+    </div>
+    
+    <div class="now-playing">
+        <div class="now-playing-info">
+            <img alt="Ам ойнап турар ырының чуруу" src="now-playing.jpg" width="50" height="50">
+            <div class="now-playing-details">
+                <h4>Өдүген-Тайга</h4>
+                <p>Сайын-Белек Сүрүң-оол</p>
+            </div>
+        </div>
+        <div class="player-controls">
+            <div class="player-buttons">
+                <button><i class="fas fa-step-backward"></i></button>
+                <button><i class="fas fa-play"></i></button>
+                <button><i class="fas fa-step-forward"></i></button>
+            </div>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+        </div>
+        <div class="player-actions">
+            <div class="volume-control">
+                <i class="fas fa-volume-up volume-icon"></i>
+                <input type="range" min="0" max="100" value="50" class="volume-slider">
+            </div>
+            <button class="like-button"><i class="far fa-heart"></i></button>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Кирер</h2>
+            <input type="text" placeholder="Хереглекчи ады" required>
+            <input type="password" placeholder="Чажыт сөс" required>
+            <button onclick="login()">Кирер</button>
+        </div>
+    </div>
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <h2>Бүрүткээр</h2>
+            <input type="text" placeholder="Хереглекчи ады" required>
+            <input type="email" placeholder="Электроннуг адрес" required>
+            <input type="password" placeholder="Чажыт сөс" required>
+            <input type="password" placeholder="Чажыт сөстү бадыткаар" required>
+            <button onclick="register()">Бүрүткээр</button>
+        </div>
+    </div>
+
+    <script>
+        // Store all page content
+        const pages = {
+            home: `
+                <h1 class="greeting">Экии, Үн дыңнакчызы!</h1>
+                
+                <section class="section">
+                    <h2 class="section-title">Сеңээ тааржыр плейлисттер</h2>
+                    <div class="playlist-grid">
+                        <div class="playlist-item" onclick="downloadPlaylist('Тыва хит ырылар')">
+                            <img alt="Тыва хит ырылар плейлист чуруу" src="playlist1.jpg" width="180" height="180">
+                            <h3>Тыва хит ырылар</h3>
+                            <p>Үн • Плейлист</p>
+                        </div>
+                        <div class="playlist-item" onclick="downloadPlaylist('Хөөмейжилер чыынды')">
+                            <img alt="Хөөмейжилер чыынды плейлист чуруу" src="playlist2.jpg" width="180" height="180">
+                            <h3>Хөөмейжилер чыынды</h3>
+                            <p>Үн • Плейлист</p>
+                        </div>
+                        <div class="playlist-item" onclick="downloadPlaylist('Чайлаг ырылары')">
+                            <img alt="Чайлаг ырылары плейлист чуруу" src="playlist3.jpg" width="180" height="180">
+                            <h3>Чайлаг ырылары</h3>
+                            <p>Үн • Плейлист</p>
+                        </div>
+                        <div class="playlist-item" onclick="downloadPlaylist('Тыва рок')">
+                            <img alt="Тыва рок плейлист чуруу" src="playlist4.jpg" width="180" height="180">
+                            <h3>Тыва рок</h3>
+                            <p>Үн • Плейлист</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="section">
+                    <h2 class="section-title">Сөөлгү дыңнааның</h2>
+                    <div class="playlist-grid">
+                        <div class="playlist-item" onclick="downloadAlbum('Өдүген-Тайга')">
+                            <img alt="Сайын-Белек Сүрүң-оол - Өдүген-Тайга альбом чуруу" src="album1.jpg" width="180" height="180">
+                            <h3>Өдүген-Тайга</h3>
+                            <p>Сайын-Белек Сүрүң-оол • Альбом</p>
+                        </div>
+                        <div class="playlist-item" onclick="downloadSong('Төрээн чуртум Тыва')">
+                            <img alt="Кайгал-оол Ховалыг - Төрээн чуртум Тыва ыры чуруу" src="song1.jpg" width="180" height="180">
+                            <h3>Төрээн чуртум Тыва</h3>
+                            <p>Кайгал-оол Ховалыг • Ыры</p>
+                        </div>
+                        <div class="playlist-item" onclick="downloadAlbum('Хемчиим')">
+                            <img alt="Чодураа Тумат - Хемчиим альбом чуруу" src="album2.jpg" width="180" height="180">
+                            <h3>Хемчиим</h3>
+                            <p>Чодураа Тумат • Альбом</p>
+                        </div>
+                        <div class="playlist-item" onclick="downloadSong('Тыва рэп')">
+                            <img alt="Ай-Хаан - Тыва рэп ыры чуруу" src="song2.jpg" width="180" height="180">
+                            <h3>Тыва рэп</h3>
+                            <p>Ай-Хаан • Ыры</p>
+                        </div>
+                    </div>
+                </section>
+            `,
+            search: `
+                <h1 class="greeting">Дилээр</h1>
+                <div class="search-container">
+                    <input type="text" placeholder="Ырылар, альбомнар азы ыраажылар..." onkeyup="search(this.value)">
+                </div>
+                <div class="search-results" id="searchResults"></div>
+            `,
+            library: `
+                <h1 class="greeting">Мээң хөгжүмүм</h1>
+                <section class="section">
+                    <h2 class="section-title">Плейлисттериң</h2>
+                    <div class="playlist-grid">
+                        <div class="playlist-item">
+                            <img alt="Эң ынак ырылар плейлист чуруу" src="playlist5.jpg" width="180" height="180">
+                            <h3>Эң ынак ырылар</h3>
+                            <p>Силер • 50 ыры</p>
+                        </div>
+                        <!-- Add more playlists as needed -->
+                    </div>
+                </section>
+                <section class="section">
+                    <h2 class="section-title">Чүктүрүп алган альбомнар</h2>
+                    <div class="playlist-grid">
+                        <div class="playlist-item">
+                            <img alt="Өдүген-Тайга альбом чуруу" src="album1.jpg" width="180" height="180">
+                            <h3>Өдүген-Тайга</h3>
+                            <p>Сайын-Белек Сүрүң-оол • Альбом</p>
+                        </div>
+                        <!-- Add more albums as needed -->
+                    </div>
+                </section>
+            `,
+            playlists: `
+                <h1 class="greeting">Плейлисттер</h1>
+                <div class="playlist-grid">
+                    <div class="playlist-item">
+                        <img alt="Тыва хит ырылар плейлист чуруу" src="playlist1.jpg" width="180" height="180">
+                        <h3>Тыва хит ырылар</h3>
+                        <p>Үн • Плейлист</p>
+                    </div>
+                    <div class="playlist-item">
+                        <img alt="Хөөмейжилер чыынды плейлист чуруу" src="playlist2.jpg" width="180" height="180">
+                        <h3>Хөөмейжилер чыынды</h3>
+                        <p>Үн • Плейлист</p>
+                    </div>
+                    <!-- Add more playlists as needed -->
+                </div>
+            `,
+            new: `
+                <h1 class="greeting">Чаа үнген</h1>
+                <section class="section">
+                    <h2 class="section-title">Чаа альбомнар</h2>
+                    <div class="playlist-grid">
+                        <div class="playlist-item">
+                            <img alt="Чаа альбом чуруу" src="newalbum1.jpg" width="180" height="180">
+                            <h3>Чаа альбом ады</h3>
+                            <p>Ыраажы ады • Альбом</p>
+                        </div>
+                        <!-- Add more new albums as needed -->
+                    </div>
+                </section>
+                <section class="section">
+                    <h2 class="section-title">Чаа ырылар</h2>
+                    <div class="playlist-grid">
+                        <div class="playlist-item">
+                            <img alt="Чаа ыры чуруу" src="newsong1.jpg" width="180" height="180">
+                            <h3>Чаа ыры ады</h3>
+                            <p>Ыраажы ады • Ыры</p>
+                        </div>
+                        <!-- Add more new songs as needed -->
+                    </div>
+                </section>
+            `,
+            favorites: `
+                <h1 class="greeting">Ынак ырыларың</h1>
+                <div class="playlist-grid">
+                    <div class="playlist-item">
+                        <img alt="Ынак ыры чуруу" src="song1.jpg" width="180" height="180">
+                        <h3>Төрээн чуртум Тыва</h3>
+                        <p>Кайгал-оол Ховалыг • Ыры</p>
+                    </div>
+                    <!-- Add more favorite songs as needed -->
+                </div>
+            `
+        };
+
+        function showPage(pageName) {
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = pages[pageName];
+
+            // Update active nav item
+            document.querySelectorAll('.nav-item a').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector(`.nav-item a[href$="/${pageName}"]`).classList.add('active');
+        }
+
+        // Add event listeners to navigation links
+        document.querySelectorAll('.nav-item a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const pageName = this.getAttribute('href').split('/').pop();
+                showPage(pageName);
+            });
+        });
+
+        function downloadPlaylist(playlistName) {
+            alert(`${playlistName} плейлист чүктүрүлүп эгелей берди.`);
+        }
+
+        function downloadAlbum(albumName) {
+            alert(`${albumName} альбом чүктүрүлүп эгелей берди.`);
+        }
+
+        function downloadSong(songName) {
+            alert(`${songName} ыры чүктүрүлүп эгелей берди.`);
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        function login() {
+            alert("Кирер шынзылга чедиишкинниг болду!");
+            closeModal('loginModal');
+        }
+
+        function register() {
+            alert("Бүрүткел чедиишкинниг болду!");
+            closeModal('registerModal');
+        }
+
+        function search(query) {
+            const searchResults = document.getElementById('searchResults');
+            // This is a mock search function. In a real application, you would fetch results from a server.
+            if (query.length > 2) {
+                searchResults.innerHTML = `
+                    <div class="search-item">
+                        <img alt="Дилээн ырының чуруу" src="searchresult1.jpg" width="180" height="180">
+                        <h3>${query}</h3>
+                        <p>Ыраажы ады • Ыры</p>
+                    </div>
+                    <div class="search-item">
+                        <img alt="Дилээн альбомнуң чуруу" src="searchresult2.jpg" width="180" height="180">
+                        <h3>${query} альбом</h3>
+                        <p>Ыраажы ады • Альбом</p>
+                    </div>
+                `;
+            } else {
+                searchResults.innerHTML = '';
+            }
+        }
+
+        const likeButton = document.querySelector('.like-button');
+        likeButton.addEventListener('click', function() {
+            this.classList.toggle('active');
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('far')) {
+                icon.classList.replace('far', 'fas');
+                alert('Ыры ынак ырыларга немешти');
+            } else {
+                icon.classList.replace('fas', 'far');
+                alert('Ыры ынак ырылардан ап каапты');
+            }
+        });
+
+        const volumeSlider = document.querySelector('.volume-slider');
+        const volumeIcon = document.querySelector('.volume-icon');
+        volumeSlider.addEventListener('input', function() {
+            const value = this.value;
+            if (value == 0) {
+                volumeIcon.classList.replace('fa-volume-up', 'fa-volume-mute');
+            } else if (value < 50) {
+                volumeIcon.classList.replace('fa-volume-up', 'fa-volume-down');
+                volumeIcon.classList.replace('fa-volume-mute', 'fa-volume-down');
+            } else {
+                volumeIcon.classList.replace('fa-volume-down', 'fa-volume-up');
+                volumeIcon.classList.replace('fa-volume-mute', 'fa-volume-up');
+            }
+            alert('Үн деңнели: ' + value + '%');
+        });
+
+        const progressBar = document.querySelector('.progress-bar');
+        progressBar.addEventListener('click', function(e) {
+            const clickPosition = e.offsetX / this.offsetWidth;
+            const newTime = clickPosition * 100;
+            document.querySelector('.progress').style.width = newTime + '%';
+            alert('Ырының үези: ' + Math.round(newTime) + '%');
+        });
+
+        document.querySelector('.player-controls .fa-play').parentElement.addEventListener('click', function() {
+            alert('Ыры ойнап эгелээр/доктаар');
+        });
+
+        // Show home page by default
+        showPage('home');
+    </script>
+</body>
+</html>
